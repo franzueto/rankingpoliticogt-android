@@ -9,5 +9,6 @@ public class ApiAccess {
     public static final String CANDIDATOS_URL = "http://rankingpolitico.hackatoncivico.com/ws/candidatos";
     public static final String CANDIDATURAS_URL = "http://rankingpolitico.hackatoncivico.com/ws/candidaturas";
     public static final String ORGANIZACIONES_URL = "http://rankingpolitico.hackatoncivico.com/ws/organizacion";
+    public static final String FAQS_URL = "http://rankingpolitico.hackatoncivico.com/ws/faqs";
 
 }

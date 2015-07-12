@@ -89,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, CandidaturasActivity.class);
                         startActivity(intent);
                         break;
+                    case R.id.faqs:
+                        Intent intentFaqs = new Intent(MainActivity.this, FAQActivity.class);
+                        startActivity(intentFaqs);
+                        break;
                     default:
                         Log.w("TAG", "Do nothing");
                         break;
