@@ -64,9 +64,9 @@ public class FAQActivity extends AppCompatActivity {
         rv_faqs.setLayoutManager(llm);
 
         /* TODO: UNCOMMENT AND CHANGE THIS WHEN FAQ FROM API BECOMES READY */
-        /*GetFAQs data = new GetFAQs();
-        data.execute();*/
-        initializeData();
+        GetFAQs data = new GetFAQs();
+        data.execute();
+        //initializeData();
     }
 
     private void initializeData(){

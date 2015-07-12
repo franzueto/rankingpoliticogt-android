@@ -62,6 +62,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.hackatoncivico.rankingpolitico.MainActivity" />
         </activity>
+        <activity
+            android:name=".CandidaturasPartidosActivity"
+            android:label="@string/title_activity_organizaciones" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.hackatoncivico.rankingpolitico.OrganizacionesActivity" />
+        </activity>
     </application>
 
 </manifest>

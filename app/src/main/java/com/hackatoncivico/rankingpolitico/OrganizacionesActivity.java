@@ -83,7 +83,7 @@ public class OrganizacionesActivity extends AppCompatActivity {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                adapter = new RVOrganizacionesAdapter(getBaseContext(), organizaciones);
+                adapter = new RVOrganizacionesAdapter(getBaseContext(), organizaciones, idCandidatura);
                 rv_organizaciones.setAdapter(adapter);
             }
         });

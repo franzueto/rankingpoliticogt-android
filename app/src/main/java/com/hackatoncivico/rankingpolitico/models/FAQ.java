@@ -5,15 +5,15 @@ package com.hackatoncivico.rankingpolitico.models;
  */
 public class FAQ {
 
-    public String question;
-    public String answer;
+    public String titulo;
+    public String descripcion;
 
     public FAQ(){
 
     }
 
     public FAQ(String question, String answer){
-        this.question = question;
-        this.answer = answer;
+        this.titulo = question;
+        this.descripcion = answer;
     }
 }

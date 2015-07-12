@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hackatoncivico.rankingpolitico.CandidaturasPartidosActivity;
 import com.hackatoncivico.rankingpolitico.ProfileActivity;
 import com.hackatoncivico.rankingpolitico.R;
 import com.hackatoncivico.rankingpolitico.models.Candidato;
@@ -26,10 +27,12 @@ public class RVOrganizacionesAdapter extends RecyclerView.Adapter<RVOrganizacion
 
     private List<Organizacion> organizaciones;
     private Context context;
+    private String idCandidatura;
 
-    public RVOrganizacionesAdapter(Context context, List<Organizacion> organizaciones){
+    public RVOrganizacionesAdapter(Context context, List<Organizacion> organizaciones, String idCandidatura){
         this.context = context;
         this.organizaciones = organizaciones;
+        this.idCandidatura = idCandidatura;
     }
 
     @Override
@@ -73,8 +76,9 @@ public class RVOrganizacionesAdapter extends RecyclerView.Adapter<RVOrganizacion
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
-            //intent.putExtra(ProfileActivity.ID_CANDIDATO, String.valueOf(candidatos.get(getPosition()).id));
+            Intent intent = new Intent(v.getContext(), CandidaturasPartidosActivity.class);
+            intent.putExtra(CandidaturasPartidosActivity.ID_CANDIDATURA, idCandidatura);
+            intent.putExtra(CandidaturasPartidosActivity.ID_ORGANIZACION, String.valueOf(organizaciones.get(getPosition()).id));
             v.getContext().startActivity(intent);
         }
     }

@@ -33,8 +33,8 @@ public class RVFAQAdapter extends RecyclerView.Adapter<RVFAQAdapter.FAQViewHolde
 
     @Override
     public void onBindViewHolder(FAQViewHolder holder, int position) {
-        holder.question.setText(faqs.get(position).question);
-        holder.answer.setText(faqs.get(position).answer);
+        holder.question.setText(faqs.get(position).titulo);
+        holder.answer.setText(faqs.get(position).descripcion);
     }
 
     @Override
