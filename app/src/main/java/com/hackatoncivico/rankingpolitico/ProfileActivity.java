@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hackatoncivico.rankingpolitico.models.Candidato;
+import com.hackatoncivico.rankingpolitico.models.Criterio;
+import com.hackatoncivico.rankingpolitico.models.CriterioCandidato;
 import com.hackatoncivico.rankingpolitico.models.RegistroCandidato;
 import com.hackatoncivico.rankingpolitico.models.RegistroCandidatos;
 import com.hackatoncivico.rankingpolitico.utils.ApiAccess;
@@ -98,6 +100,24 @@ public class ProfileActivity extends AppCompatActivity {
 
                 TextView full_name = (TextView) findViewById(R.id.profile_full_name);
                 full_name.setText(candidato.nombres + " " + candidato.apellidos);
+
+                TextView logros = (TextView) findViewById(R.id.profile_logros_count);
+                logros.setText(String.valueOf(candidato.logros.size()));
+
+                int criterios_count = 0;
+
+                for (int i = 0; i < candidato.criterios.size(); i++) {
+                    CriterioCandidato criterioCandidato = candidato.criterios.get(i);
+                    Criterio criterio = criterioCandidato.criterio;
+                    try{
+                        criterios_count = criterios_count + Integer.parseInt(criterio.puntuacion);
+                    } catch (NumberFormatException nfe){
+                        nfe.printStackTrace();
+                    }
+                }
+
+                TextView criterios = (TextView) findViewById(R.id.profile_criterios_count);
+                criterios.setText(String.valueOf(criterios_count));
             }
         });
     }

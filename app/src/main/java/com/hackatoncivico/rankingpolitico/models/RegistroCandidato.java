@@ -10,4 +10,9 @@ public class RegistroCandidato {
     public Candidato registros;
     public String mensaje;
     public Boolean resultado;
+    public List<Logro> logros;
+
+    public RegistroCandidato(){
+
+    }
 }
