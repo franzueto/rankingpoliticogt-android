@@ -1,46 +1,59 @@
 package com.hackatoncivico.rankingpolitico.adapters;
 
-import android.support.v7.widget.CardView;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hackatoncivico.rankingpolitico.ProfileActivity;
 import com.hackatoncivico.rankingpolitico.R;
-import com.hackatoncivico.rankingpolitico.models.Person;
+import com.hackatoncivico.rankingpolitico.models.Candidato;
+import com.hackatoncivico.rankingpolitico.utils.ApiAccess;
+import com.hackatoncivico.rankingpolitico.utils.Utils;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 /**
  * Created by franz on 7/11/2015.
  */
-public class RVRankingAdapter extends RecyclerView.Adapter<RVRankingAdapter.PersonViewHolder> {
+public class RVRankingAdapter extends RecyclerView.Adapter<RVRankingAdapter.CandidatoViewHolder>{
 
-    private List<Person> persons;
+    private List<Candidato> candidatos;
+    private Context context;
 
-    public RVRankingAdapter(List<Person> persons){
-        this.persons = persons;
+    public RVRankingAdapter(Context context, List<Candidato> candidatos){
+        this.context = context;
+        this.candidatos = candidatos;
     }
 
     @Override
-    public PersonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CandidatoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ranking, parent, false);
-        PersonViewHolder pvh = new PersonViewHolder(v);
+        CandidatoViewHolder pvh = new CandidatoViewHolder(v);
         return pvh;
     }
 
     @Override
-    public void onBindViewHolder(PersonViewHolder holder, int position) {
-        holder.personName.setText(persons.get(position).getName());
-        holder.personPuesto.setText(persons.get(position).getPuesto());
-        holder.personPhoto.setImageResource(persons.get(position).getPhotoId());
+    public void onBindViewHolder(CandidatoViewHolder holder, int position) {
+        holder.personName.setText(candidatos.get(position).nombres + " " +  candidatos.get(position).apellidos);
+        holder.personPuesto.setText(candidatos.get(position).puesto.titulo);
+
+        Picasso.with(context)
+                .load(ApiAccess.DOMINIO_URL + candidatos.get(position).foto)
+                .placeholder(R.drawable.avatar)
+                .into(holder.personPhoto);
+        //holder.personPhoto.setImageResource(candidatos.get(position).getPhotoId());
     }
 
     @Override
     public int getItemCount() {
-        return persons.size();
+        return candidatos.size();
     }
 
     @Override
@@ -48,16 +61,26 @@ public class RVRankingAdapter extends RecyclerView.Adapter<RVRankingAdapter.Pers
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public static class PersonViewHolder extends RecyclerView.ViewHolder {
+    public class CandidatoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView personName;
         TextView personPuesto;
         ImageView personPhoto;
 
-        PersonViewHolder(View itemView) {
+        CandidatoViewHolder(View itemView) {
             super(itemView);
             personName = (TextView)itemView.findViewById(R.id.ranking_name);
             personPuesto = (TextView)itemView.findViewById(R.id.ranking_puesto);
             personPhoto = (ImageView)itemView.findViewById(R.id.ranking_photo);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.e("asdf", "asdf "+getPosition());
+            Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+            intent.putExtra(ProfileActivity.ID_CANDIDATO, String.valueOf(candidatos.get(getPosition()).id));
+            v.getContext().startActivity(intent);
         }
     }
 }

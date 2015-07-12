@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Ranking Politico</string>
+    <string name="app_name">Ranking Político</string>
+
+    <string name="title_profile_activity">Perfil</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -8,4 +10,5 @@
 
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="send_to">Enviar a..</string>
 </resources>
