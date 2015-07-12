@@ -52,6 +52,8 @@ public class FragmentMain extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.removePreference(getActivity(), Utils.SELECTED_CANDIDATE);
+        Utils.removePreference(getActivity(), Utils.SELECTED_CANDIDATURA);
+        Utils.removePreference(getActivity(), Utils.SELECTED_ORGANIZACION);
     }
 
     @Override

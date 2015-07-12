@@ -1,6 +1,8 @@
 package com.hackatoncivico.rankingpolitico;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +24,7 @@ import com.hackatoncivico.rankingpolitico.models.Organizacion;
 import com.hackatoncivico.rankingpolitico.models.RegistroCandidatos;
 import com.hackatoncivico.rankingpolitico.models.RegistroOrganizaciones;
 import com.hackatoncivico.rankingpolitico.utils.ApiAccess;
+import com.hackatoncivico.rankingpolitico.utils.Utils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -62,19 +65,17 @@ public class OrganizacionesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            //get parameters
-            idCandidatura = extras.getString(ID_CANDIDATURA);
+        //get parameters
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        idCandidatura = sharedPref.getString(Utils.SELECTED_CANDIDATURA, "");
 
-            rv_organizaciones = (RecyclerView) findViewById(R.id.rv_organizaciones);
-            rv_organizaciones.setHasFixedSize(true);
+        rv_organizaciones = (RecyclerView) findViewById(R.id.rv_organizaciones);
+        rv_organizaciones.setHasFixedSize(true);
 
-            rv_organizaciones.setLayoutManager(new GridLayoutManager(this, 2));
+        rv_organizaciones.setLayoutManager(new GridLayoutManager(this, 2));
 
-            GetOrganizaciones data = new GetOrganizaciones();
-            data.execute();
-        }
+        GetOrganizaciones data = new GetOrganizaciones();
+        data.execute();
     }
 
     private void handleOrganizacionesList(final List<Organizacion> organizaciones){

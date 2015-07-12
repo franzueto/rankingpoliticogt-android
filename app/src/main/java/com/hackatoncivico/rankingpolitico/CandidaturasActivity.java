@@ -22,6 +22,7 @@ import com.hackatoncivico.rankingpolitico.models.Candidatura;
 import com.hackatoncivico.rankingpolitico.models.RegistroCandidatos;
 import com.hackatoncivico.rankingpolitico.models.RegistroCandidaturas;
 import com.hackatoncivico.rankingpolitico.utils.ApiAccess;
+import com.hackatoncivico.rankingpolitico.utils.Utils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -55,6 +56,9 @@ public class CandidaturasActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        Utils.removePreference(this, Utils.SELECTED_CANDIDATURA);
+        Utils.removePreference(this, Utils.SELECTED_ORGANIZACION);
+
         // Get ListView object from xml
         listView = (ListView) findViewById(R.id.list_candidaturas);
 
@@ -85,7 +89,8 @@ public class CandidaturasActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
                         Intent intent = new Intent(getBaseContext(), OrganizacionesActivity.class);
-                        intent.putExtra(OrganizacionesActivity.ID_CANDIDATURA, String.valueOf(candidadaturas.get(position).id));
+                        //intent.putExtra(OrganizacionesActivity.ID_CANDIDATURA, String.valueOf(candidadaturas.get(position).id));
+                        Utils.savePreference(getBaseContext(), Utils.SELECTED_CANDIDATURA, String.valueOf(candidadaturas.get(position).id));
                         startActivity(intent);
                     }
 

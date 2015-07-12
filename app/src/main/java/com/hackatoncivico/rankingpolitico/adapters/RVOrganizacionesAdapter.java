@@ -77,8 +77,9 @@ public class RVOrganizacionesAdapter extends RecyclerView.Adapter<RVOrganizacion
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(v.getContext(), CandidaturasPartidosActivity.class);
-            intent.putExtra(CandidaturasPartidosActivity.ID_CANDIDATURA, idCandidatura);
-            intent.putExtra(CandidaturasPartidosActivity.ID_ORGANIZACION, String.valueOf(organizaciones.get(getPosition()).id));
+            //intent.putExtra(CandidaturasPartidosActivity.ID_CANDIDATURA, idCandidatura);
+            //intent.putExtra(CandidaturasPartidosActivity.ID_ORGANIZACION, String.valueOf(organizaciones.get(getPosition()).id));
+            Utils.savePreference(v.getContext(), Utils.SELECTED_ORGANIZACION, String.valueOf(organizaciones.get(getPosition()).id));
             v.getContext().startActivity(intent);
         }
     }

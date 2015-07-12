@@ -25,6 +25,8 @@ public class Utils {
     public static final long MILLSECS_PER_MINUTE = 60 * 1000; //Milisegundos por minuto
 
     public static final String SELECTED_CANDIDATE = "SELECTED_CANDIDATE";
+    public static final String SELECTED_CANDIDATURA = "SELECTED_CANDIDATURA";
+    public static final String SELECTED_ORGANIZACION = "SELECTED_ORGANIZACION";
 
     public static String zeroFormatDate(long value){
         String zeroFormat = String.valueOf(value);

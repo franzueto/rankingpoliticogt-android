@@ -67,25 +67,23 @@ public class CandidaturasPartidosActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            //get parameters
-            idCandidatura = extras.getString(ID_CANDIDATURA);
-            idOrganizacion = extras.getString(ID_ORGANIZACION);
+        //get parameters
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        idCandidatura = sharedPref.getString(Utils.SELECTED_CANDIDATURA, "");
+        idOrganizacion = sharedPref.getString(Utils.SELECTED_ORGANIZACION, "");
 
-            rv_candidaturas_partidos = (RecyclerView) findViewById(R.id.rv_candidaturas_partidos);
-            rv_candidaturas_partidos.setHasFixedSize(true);
+        rv_candidaturas_partidos = (RecyclerView) findViewById(R.id.rv_candidaturas_partidos);
+        rv_candidaturas_partidos.setHasFixedSize(true);
 
-            LinearLayoutManager llm = new LinearLayoutManager(this);
-            rv_candidaturas_partidos.setLayoutManager(llm);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv_candidaturas_partidos.setLayoutManager(llm);
 
-            GetRankingPolitico data = new GetRankingPolitico();
-            data.execute();
-        }
+        GetRankingPolitico data = new GetRankingPolitico();
+        data.execute();
     }
 
     private void handleCandidatos(final List<Candidato> candidatos){
-        /*this.candidatos = candidatos;
+        this.candidatos = candidatos;
 
         this.runOnUiThread(new Runnable() {
             @Override
@@ -93,7 +91,7 @@ public class CandidaturasPartidosActivity extends AppCompatActivity {
                 adapter = new RVCandidaturasPartidosAdapter(getBaseContext(), candidatos);
                 rv_candidaturas_partidos.setAdapter(adapter);
             }
-        });*/
+        });
     }
 
     private class GetRankingPolitico extends AsyncTask<String, Void, Void> {
