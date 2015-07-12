@@ -24,19 +24,7 @@ public class Utils {
     public static final long MILLSECS_PER_HOUR = 60 * 60 * 1000; //Milisegundos por hora
     public static final long MILLSECS_PER_MINUTE = 60 * 1000; //Milisegundos por minuto
 
-    public static final String PARSE_MAIN_BANNER_TYPE = "MAIN_BANNER";
-    public static final String PARSE_THIN_BANNER_TYPE = "THIN_BANNER";
-    public static final int BANNER_TIME_DELAY = 3000;
-
-    public static final String APP_PACKAGE = "com.muniguate.carrerasmuni.";
-    public static final String TABS_STATE = APP_PACKAGE + "TABS_STATE";
-    public static final String COMMUNITY_TAB_SPINNER_STATE = APP_PACKAGE + "COMMUNITY_TAB_SPINNER_STATE";
-    public static final String TAB4_REFRESH_CALENDAR = APP_PACKAGE + "TAB4_REFRESH_CALENDAR";
-
-    public static final String FACEBOOK_LARGE_PICTURE = "https://graph.facebook.com/%s/picture?type=large";
-    public static final String FACEBOOK_MEDIUM_PICTURE = "https://graph.facebook.com/%s/picture?type=normal";
-    public static final String FACEBOOK_SMALL_PICTURE = "https://graph.facebook.com/%s/picture?type=small";
-    public static final String FACEBOOK_SQUARE_PICTURE = "https://graph.facebook.com/%s/picture?type=square";
+    public static final String SELECTED_CANDIDATE = "SELECTED_CANDIDATE";
 
     public static String zeroFormatDate(long value){
         String zeroFormat = String.valueOf(value);

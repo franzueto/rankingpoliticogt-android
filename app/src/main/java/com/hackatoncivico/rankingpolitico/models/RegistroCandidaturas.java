@@ -5,9 +5,13 @@ import java.util.List;
 /**
  * Created by franz on 7/11/2015.
  */
-public class RegistroCandidato {
+public class RegistroCandidaturas {
 
-    public Candidato registros;
+    public List<Candidatura> registros;
     public String mensaje;
     public Boolean resultado;
+
+    public RegistroCandidaturas(){
+
+    }
 }

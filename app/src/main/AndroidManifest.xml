@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hackatoncivico.rankingpolitico" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ProfileActivity"
             android:label="@string/app_name" >
@@ -26,7 +25,33 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.hackatoncivico.rankingpolitico.MainActivity" />
         </activity>
-
+        <activity
+            android:name=".LogrosActivity"
+            android:label="@string/app_name" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.hackatoncivico.rankingpolitico.ProfileActivity" />
+        </activity>
+        <activity
+            android:name=".CriteriosActivity"
+            android:label="@string/title_activity_criterios"
+            android:parentActivityName=".ProfileActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.hackatoncivico.rankingpolitico.ProfileActivity" />
+        </activity>
+        <activity
+            android:name=".CandidaturasActivity"
+            android:label="@string/title_activity_candidaturas"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.hackatoncivico.rankingpolitico.MainActivity" />
+        </activity>
+        <activity
+            android:name=".OrganizacionesActivity"
+            android:label="@string/title_activity_organizaciones" >
+        </activity>
     </application>
 
 </manifest>

@@ -8,7 +8,29 @@
     <string name="navigation_item_1">Ranking</string>
     <string name="navigation_item_2">Conoce a los candidatos</string>
 
+    <string name="tab_1_title">Likes</string>
+    <string name="tab_2_title">Ranking</string>
+
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="send_to">Enviar a..</string>
+
+    <string name="watch_achievements">Ver Logros</string>
+    <string name="watch_criteria">Ver Criterios</string>
+    
+    <string name="achievements">Logros</string>
+    <string name="criteria">Criterios</string>
+    <string name="title_activity_logros">Logros</string>
+    <string name="title_activity_criterios">Criterios</string>
+
+    <string-array name="candidaturas">
+        <item>Candidatos a Presidente</item>
+        <item>Candidatos Alcaldías</item>
+        <item>Candidatos Diputados Centrales</item>
+        <item>Candidatos Listado Nacional</item>
+        <item>Candidatos Parlacen</item>
+    </string-array>
+
+    <string name="title_activity_candidaturas">Candidaturas</string>
+    <string name="title_activity_organizaciones">OrganizacionesActivity</string>
 </resources>

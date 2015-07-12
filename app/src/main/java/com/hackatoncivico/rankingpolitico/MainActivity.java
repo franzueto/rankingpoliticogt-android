@@ -1,36 +1,23 @@
 package com.hackatoncivico.rankingpolitico;
 
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.hackatoncivico.rankingpolitico.adapters.RVRankingAdapter;
-import com.hackatoncivico.rankingpolitico.models.Candidato;
-import com.hackatoncivico.rankingpolitico.models.RegistroCandidato;
-import com.hackatoncivico.rankingpolitico.utils.ApiAccess;
+import com.hackatoncivico.rankingpolitico.fragments.FragmentMain;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +25,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private List<Candidato> candidatos;
-
-    private RVRankingAdapter adapter;
-    private RecyclerView rv_ranking;
-
-    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,22 +36,20 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
-        progressBar = (ProgressBar) findViewById(R.id.ranking_progress_bar);
-
         setUpDrawer(toolbar);
 
-        rv_ranking = (RecyclerView)findViewById(R.id.rv_ranking);
-        rv_ranking.setHasFixedSize(true);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.main_view_pager);
+        setupViewPager(viewPager);
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv_ranking.setLayoutManager(llm);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tablayout);
+        tabLayout.setupWithViewPager(viewPager);
+    }
 
-        progressBar.setVisibility(View.VISIBLE);
-        //Get Data from API
-        Log.e(TAG, "HERE:2 ");
-        GetRankingPolitico data = new GetRankingPolitico();
-        data.execute();
-        Log.e(TAG, "HERE: 3 ");
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new FragmentMain(), getString(R.string.tab_1_title));
+        adapter.addFrag(new FragmentMain(), getString(R.string.tab_2_title));
+        viewPager.setAdapter(adapter);
     }
 
     private void setUpDrawer(Toolbar toolbar){
@@ -107,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
                         //startActivity(mainIntent);
                         break;
                     case R.id.partidos_politicos:
-                        //Intent faqIntent = new Intent(MainActivity.this, FAQActivity.class);
-                        //startActivity(faqIntent);
+                        Intent intent = new Intent(MainActivity.this, CandidaturasActivity.class);
+                        startActivity(intent);
                         break;
                     default:
                         Log.w("TAG", "Do nothing");
@@ -120,66 +99,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void handleCandidatosList(final List<Candidato> candidatos){
-        this.candidatos = candidatos;
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.GONE);
-
-                adapter = new RVRankingAdapter(getBaseContext(), candidatos);
-                rv_ranking.setAdapter(adapter);
-            }
-        });
-    }
-
-    private class GetRankingPolitico extends AsyncTask<String, Void, Void> {
-
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
         @Override
-        protected Void doInBackground(String... params) {
-            Log.e(TAG, "HERE: ");
-            try {
-                //Create an HTTP client
-                HttpClient client = new DefaultHttpClient();
-                HttpGet get = new HttpGet(ApiAccess.CANDIDATOS_URL);
-
-                //Perform the request and check the status code
-                HttpResponse response = client.execute(get);
-                StatusLine statusLine = response.getStatusLine();
-                if(statusLine.getStatusCode() == 200) {
-                    HttpEntity entity = response.getEntity();
-                    InputStream content = entity.getContent();
-
-                    try {
-                        //Read the server response and attempt to parse it as JSON
-                        Reader reader = new InputStreamReader(content);
-
-                        GsonBuilder gsonBuilder = new GsonBuilder();
-                        //gsonBuilder.setDateFormat("M/d/yy hh:mm a");
-                        Gson gson = gsonBuilder.create();
-                        //List<Candidato> posts = new ArrayList<Candidato>();
-                        //posts = Arrays.asList(gson.fromJson(reader, Candidato[].class));
-                        RegistroCandidato registroCandidato = gson.fromJson(reader, RegistroCandidato.class);
-
-                        content.close();
-
-                        Log.e(TAG, "" + registroCandidato.registros.size());
-
-                        handleCandidatosList(registroCandidato.registros);
-                    } catch (Exception ex) {
-                        Log.e(TAG, "Failed to parse JSON due to: " + ex);
-                        //failedLoadingPosts();
-                    }
-                } else {
-                    Log.e(TAG, "Server responded with status code: " + statusLine.getStatusCode());
-                    //failedLoadingPosts();
-                }
-            } catch(Exception ex) {
-                Log.e(TAG, "Failed to send HTTP POST request due to: " + ex);
-                //failedLoadingPosts();
-            }
-            return null;
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+        public void addFrag(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 }

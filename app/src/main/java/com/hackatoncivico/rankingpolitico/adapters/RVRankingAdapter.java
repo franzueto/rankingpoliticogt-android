@@ -77,9 +77,9 @@ public class RVRankingAdapter extends RecyclerView.Adapter<RVRankingAdapter.Cand
 
         @Override
         public void onClick(View v) {
-            Log.e("asdf", "asdf "+getPosition());
             Intent intent = new Intent(v.getContext(), ProfileActivity.class);
-            intent.putExtra(ProfileActivity.ID_CANDIDATO, String.valueOf(candidatos.get(getPosition()).id));
+            Utils.savePreference(v.getContext(), Utils.SELECTED_CANDIDATE, String.valueOf(candidatos.get(getPosition()).id));
+            //intent.putExtra(ProfileActivity.ID_CANDIDATO, String.valueOf(candidatos.get(getPosition()).id));
             v.getContext().startActivity(intent);
         }
     }

@@ -1,26 +1,27 @@
 package com.hackatoncivico.rankingpolitico;
 
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.util.LogWriter;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hackatoncivico.rankingpolitico.adapters.RVOrganizacionesAdapter;
+import com.hackatoncivico.rankingpolitico.adapters.RVRankingAdapter;
 import com.hackatoncivico.rankingpolitico.models.Candidato;
-import com.hackatoncivico.rankingpolitico.models.RegistroCandidato;
+import com.hackatoncivico.rankingpolitico.models.Organizacion;
 import com.hackatoncivico.rankingpolitico.models.RegistroCandidatos;
+import com.hackatoncivico.rankingpolitico.models.RegistroOrganizaciones;
 import com.hackatoncivico.rankingpolitico.utils.ApiAccess;
-import com.hackatoncivico.rankingpolitico.utils.Utils;
-import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -32,85 +33,70 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.List;
 
-/**
- * Created by franz on 7/11/2015.
- */
-public class ProfileActivity extends AppCompatActivity {
 
-    private static final String TAG = "ProfileActivity";
+public class OrganizacionesActivity extends AppCompatActivity {
 
-    public static final String ID_CANDIDATO = "ID_CANDIDATO";
+    private static final String TAG = "OrganizacionesActivity";
 
-    private String idCandidato;
+    public static final String ID_CANDIDATURA = "ID_CANDIDATURA";
 
-    private Candidato candidato;
+    private String idCandidatura;
+
+    private RecyclerView rv_organizaciones;
+    private RVOrganizacionesAdapter adapter;
+
+    List<Organizacion> organizaciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_organizaciones);
 
         // Add Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        toolbar.setTitle(getString(R.string.title_profile_activity));
+        toolbar.setTitle(getString(R.string.title_activity_organizaciones));
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        idCandidato = sharedPref.getString(Utils.SELECTED_CANDIDATE, "");
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            //get parameters
+            idCandidatura = extras.getString(ID_CANDIDATURA);
 
-        GetCandidato data = new GetCandidato();
-        data.execute();
+            rv_organizaciones = (RecyclerView) findViewById(R.id.rv_organizaciones);
+            rv_organizaciones.setHasFixedSize(true);
 
-    }
+            rv_organizaciones.setLayoutManager(new GridLayoutManager(this, 2));
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (candidato != null) {
-            handleCandidato(candidato);
+            GetOrganizaciones data = new GetOrganizaciones();
+            data.execute();
         }
     }
 
-    private void handleCandidato(final Candidato candidato){
-        this.candidato = candidato;
+    private void handleOrganizacionesList(final List<Organizacion> organizaciones){
+        this.organizaciones = organizaciones;
 
-        Button btn_logros = (Button) findViewById(R.id.btn_logros);
-        btn_logros.setOnClickListener(Utils.setNextScreenListener(this, LogrosActivity.class, LogrosActivity.ID_CANDIDATO, String.valueOf(candidato.id)));
-
-        Button btn_criterios = (Button) findViewById(R.id.btn_criterios);
-        btn_criterios.setOnClickListener(Utils.setNextScreenListener(this, CriteriosActivity.class, CriteriosActivity.ID_CANDIDATO, String.valueOf(candidato.id)));
-
-        runOnUiThread(new Runnable() {
+        this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //progressBar.setVisibility(View.GONE);
-                ImageView avatar = (ImageView) findViewById(R.id.profile_avatar);
-
-                Picasso.with(getBaseContext())
-                        .load(ApiAccess.DOMINIO_URL + candidato.foto)
-                        .placeholder(R.drawable.avatar)
-                        .into(avatar);
-
-                TextView full_name = (TextView) findViewById(R.id.profile_full_name);
-                full_name.setText(candidato.nombres + " " + candidato.apellidos);
+                adapter = new RVOrganizacionesAdapter(getBaseContext(), organizaciones);
+                rv_organizaciones.setAdapter(adapter);
             }
         });
     }
 
-
-    private class GetCandidato extends AsyncTask<String, Void, Void> {
+    private class GetOrganizaciones extends AsyncTask<String, Void, Void> {
 
         @Override
         protected Void doInBackground(String... params) {
             try {
                 //Create an HTTP client
                 HttpClient client = new DefaultHttpClient();
-                HttpGet get = new HttpGet(ApiAccess.CANDIDATOS_URL + '/' + idCandidato);
+                HttpGet get = new HttpGet(ApiAccess.ORGANIZACIONES_URL);
 
                 //Perform the request and check the status code
                 HttpResponse response = client.execute(get);
@@ -128,11 +114,13 @@ public class ProfileActivity extends AppCompatActivity {
                         Gson gson = gsonBuilder.create();
                         //List<Candidato> posts = new ArrayList<Candidato>();
                         //posts = Arrays.asList(gson.fromJson(reader, Candidato[].class));
-                        RegistroCandidato registroCandidato = gson.fromJson(reader, RegistroCandidato.class);
+                        RegistroOrganizaciones registroOrganizaciones = gson.fromJson(reader, RegistroOrganizaciones.class);
 
                         content.close();
 
-                        handleCandidato(registroCandidato.registros);
+                        Log.e(TAG, registroOrganizaciones.registros.size()+"");
+
+                        handleOrganizacionesList(registroOrganizaciones.registros);
                     } catch (Exception ex) {
                         Log.e(TAG, "Failed to parse JSON due to: " + ex);
                         //failedLoadingPosts();
